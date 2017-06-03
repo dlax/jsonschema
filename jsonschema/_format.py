@@ -129,12 +129,14 @@ class FormatChecker(object):
             return True
 
 
-_draft_checkers = {"draft3": [], "draft4": []}
+_draft_checkers = {"draft3": [], "draft4": [], "draft6": []}
 
 
-def _checks_drafts(both=None, draft3=None, draft4=None, raises=()):
-    draft3 = draft3 or both
-    draft4 = draft4 or both
+def _checks_drafts(all_=None, draft3=None, draft4=None, draft6=None,
+                   raises=()):
+    draft3 = draft3 or all_
+    draft4 = draft4 or all_
+    draft6 = draft6 or all_
 
     def wrap(func):
         if draft3:
@@ -143,6 +145,9 @@ def _checks_drafts(both=None, draft3=None, draft4=None, raises=()):
         if draft4:
             _draft_checkers["draft4"].append(draft4)
             func = FormatChecker.cls_checks(draft4, raises)(func)
+        if draft6:
+            _draft_checkers["draft6"].append(draft6)
+            func = FormatChecker.cls_checks(draft6, raises)(func)
         return func
     return wrap
 
