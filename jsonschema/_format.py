@@ -207,6 +207,13 @@ else:
         return rfc3987.parse(instance, rule="URI")
 
 
+    @_checks_drafts(draft6="uri-ref", raises=ValueError)
+    def is_uri_ref(instance):
+        if not isinstance(instance, str_types):
+            return True
+        return rfc3987.parse(instance, rule="URI_reference")
+
+
 try:
     import strict_rfc3339
 except ImportError:
