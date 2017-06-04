@@ -160,11 +160,11 @@ def create(meta_schema, validators=(), version=None, default_types=None):  # noq
     return Validator
 
 
-def extend(validator, validators, version=None):
+def extend(validator, validators, version=None, meta_schema=None):
     all_validators = dict(validator.VALIDATORS)
     all_validators.update(validators)
     return create(
-        meta_schema=validator.META_SCHEMA,
+        meta_schema=meta_schema or validator.META_SCHEMA,
         validators=all_validators,
         version=version,
         default_types=validator.DEFAULT_TYPES,
