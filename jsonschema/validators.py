@@ -233,6 +233,13 @@ Draft4Validator = create(
     version="draft4",
 )
 
+Draft6Validator = extend(
+    Draft4Validator,
+    meta_schema=_utils.load_schema("draft6"),
+    validators={
+    },
+    version="draft6",
+)
 
 class RefResolver(object):
     """
