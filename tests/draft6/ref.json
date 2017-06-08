@@ -157,12 +157,12 @@
         },
         "tests": [
             {
-                "description": "remote ref valid",
+                "description": "ref valid",
                 "data": { "foo": [] },
                 "valid": true
             },
             {
-                "description": "remote ref valid, maxItems ignored",
+                "description": "ref valid, maxItems ignored",
                 "data": { "foo": [ 1, 2, 3] },
                 "valid": true
             },
@@ -175,16 +175,68 @@
     },
     {
         "description": "remote ref, containing refs itself",
-        "schema": {"$ref": "http://json-schema.org/draft-03/schema#"},
+        "schema": {"$ref": "http://json-schema.org/draft-04/schema#"},
         "tests": [
             {
                 "description": "remote ref valid",
-                "data": {"items": {"type": "integer"}},
+                "data": {"minLength": 1},
                 "valid": true
             },
             {
                 "description": "remote ref invalid",
-                "data": {"items": {"type": 1}},
+                "data": {"minLength": -1},
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "property named $ref that is not a reference",
+        "schema": {
+            "properties": {
+                "$ref": {"type": "string"}
+            }
+        },
+        "tests": [
+            {
+                "description": "property named $ref valid",
+                "data": {"$ref": "a"},
+                "valid": true
+            },
+            {
+                "description": "property named $ref invalid",
+                "data": {"$ref": 2},
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "$ref to boolean schema true",
+        "schema": {
+            "$ref": "#/definitions/bool",
+            "definitions": {
+                "bool": true
+            }
+        },
+        "tests": [
+            {
+                "description": "any value is valid",
+                "data": "foo",
+                "valid": true
+            }
+        ]
+    },
+    {
+        "description": "$ref to boolean schema false",
+        "schema": {
+            "$ref": "#/definitions/bool",
+            "definitions": {
+                "bool": false
+            }
+        },
+        "tests": [
+            {
+                "description": "any value is invalid",
+                "data": "foo",
                 "valid": false
             }
         ]
