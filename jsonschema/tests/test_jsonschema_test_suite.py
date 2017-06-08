@@ -25,8 +25,9 @@ except ImportError:
 
 from jsonschema import (
     FormatError, SchemaError, ValidationError, Draft3Validator,
-    Draft4Validator, FormatChecker, draft3_format_checker,
-    draft4_format_checker, validate,
+    Draft4Validator, Draft6Validator, FormatChecker, draft3_format_checker,
+    draft4_format_checker, draft6_format_checker,
+    validate,
 )
 from jsonschema.compat import PY3
 from jsonschema.tests.compat import mock, unittest
@@ -255,6 +256,32 @@ class TestDraft3(unittest.TestCase, TypesMixin, DecimalMixin, FormatMixin):
 class TestDraft4(unittest.TestCase, TypesMixin, DecimalMixin, FormatMixin):
     validator_class = Draft4Validator
     validator_kwargs = {"format_checker": draft4_format_checker}
+
+    # TODO: we're in need of more meta schema tests
+    def test_invalid_properties(self):
+        with self.assertRaises(SchemaError):
+            validate({}, {"properties": {"test": True}},
+                     cls=self.validator_class)
+
+    def test_minItems_invalid_string(self):
+        with self.assertRaises(SchemaError):
+            # needs to be an integer
+            validate([1], {"minItems": "1"}, cls=self.validator_class)
+
+
+@load_json_cases(
+    "draft6/*.json",
+    skip=narrow_unicode_build,
+    ignore_glob="draft6/refRemote.json",
+)
+@load_json_cases(
+    "draft6/optional/format.json", skip=missing_format(draft6_format_checker)
+)
+@load_json_cases("draft6/optional/bignum.json")
+@load_json_cases("draft6/optional/zeroTerminatedFloats.json")
+class TestDraft6(unittest.TestCase, TypesMixin, DecimalMixin, FormatMixin):
+    validator_class = Draft6Validator
+    validator_kwargs = {"format_checker": draft6_format_checker}
 
     # TODO: we're in need of more meta schema tests
     def test_invalid_properties(self):
