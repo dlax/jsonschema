@@ -281,3 +281,4 @@ else:
 
 draft3_format_checker = FormatChecker(_draft_checkers["draft3"])
 draft4_format_checker = FormatChecker(_draft_checkers["draft4"])
+draft6_format_checker = FormatChecker(_draft_checkers["draft6"])
