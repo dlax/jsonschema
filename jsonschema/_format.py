@@ -214,6 +214,18 @@ else:
         return rfc3987.parse(instance, rule="URI_reference")
 
 
+if False: # TODO: find python package to validate URI template
+    @_checks_drafts(draft6="uri-template", raises=ValueError)
+    def is_uri_template(instance):
+        pass
+
+
+if False: # TODO: find python package to validate json-pointer
+    @_checks_drafts(draft6="json-pointer", raises=ValueError)
+    def is_json_pointer(instance):
+        pass
+
+
 try:
     import strict_rfc3339
 except ImportError:
